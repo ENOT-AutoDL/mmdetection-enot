@@ -111,7 +111,7 @@ test_pipeline = [
 batch_size = 42
 data = dict(
     samples_per_gpu=batch_size,
-    workers_per_gpu=0,
+    workers_per_gpu=1,
     train=dict(
         type='RepeatDataset', times=1, dataset=dict(pipeline=train_pipeline)),
     val=dict(pipeline=test_pipeline),
