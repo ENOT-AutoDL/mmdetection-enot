@@ -1,5 +1,5 @@
 _base_ = [
-    '../_base_/models/ssd300.py', '../_base_/datasets/coco_detection.py',
+    '../_base_/models/ssd_mnv2_train.py', '../_base_/datasets/coco_detection.py',
     '../_base_/schedules/schedule_2x.py', '../_base_/default_runtime.py'
 ]
 # dataset settings
@@ -60,3 +60,7 @@ data = dict(
 # optimizer
 optimizer = dict(type='SGD', lr=2e-3, momentum=0.9, weight_decay=5e-4)
 optimizer_config = dict(_delete_=True)
+custom_hooks = [
+    dict(type='NumClassCheckHook'),
+    dict(type='CheckInvalidLossHook', interval=50, priority='VERY_LOW')
+]
