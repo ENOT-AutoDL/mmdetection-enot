@@ -1,4 +1,3 @@
-# Copyright (c) OpenMMLab. All rights reserved.
 from mmcv.cnn import ConvModule
 
 from mmdet.models.builder import HEADS

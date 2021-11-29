@@ -1,4 +1,3 @@
-# Copyright (c) OpenMMLab. All rights reserved.
 import torch.nn as nn
 from mmcv.cnn import (ConvModule, caffe2_xavier_init, constant_init, is_norm,
                       normal_init)

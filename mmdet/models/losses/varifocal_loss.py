@@ -1,4 +1,3 @@
-# Copyright (c) OpenMMLab. All rights reserved.
 import mmcv
 import torch.nn as nn
 import torch.nn.functional as F

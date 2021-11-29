@@ -1,4 +1,3 @@
-# Copyright (c) OpenMMLab. All rights reserved.
 from argparse import ArgumentParser, Namespace
 from pathlib import Path
 from tempfile import TemporaryDirectory

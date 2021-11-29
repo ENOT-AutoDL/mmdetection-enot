@@ -1,4 +1,3 @@
-# Copyright (c) OpenMMLab. All rights reserved.
 import pytest
 import torch
 from mmcv.cnn import is_norm

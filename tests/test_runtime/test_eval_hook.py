@@ -1,4 +1,3 @@
-# Copyright (c) OpenMMLab. All rights reserved.
 import os.path as osp
 import tempfile
 import unittest.mock as mock

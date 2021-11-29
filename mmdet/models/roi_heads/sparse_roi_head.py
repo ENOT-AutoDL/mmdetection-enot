@@ -1,5 +1,3 @@
-# Copyright (c) OpenMMLab. All rights reserved.
-import numpy as np
 import torch
 
 from mmdet.core import bbox2result, bbox2roi, bbox_xyxy_to_cxcywh
@@ -261,15 +259,6 @@ class SparseRoIHead(CascadeRoIHead):
         num_imgs = len(img_metas)
         proposal_list = [proposal_boxes[i] for i in range(num_imgs)]
         object_feats = proposal_features
-
-        if all([proposal.shape[0] == 0 for proposal in proposal_list]):
-            # There is no proposal in the whole batch
-            bbox_results = [[
-                np.zeros((0, 5), dtype=np.float32)
-                for i in range(self.bbox_head[-1].num_classes)
-            ]] * num_imgs
-            return bbox_results
-
         for stage in range(self.num_stages):
             rois = bbox2roi(proposal_list)
             bbox_results = self._bbox_forward(stage, x, rois, object_feats,
@@ -306,6 +295,7 @@ class SparseRoIHead(CascadeRoIHead):
             bbox2result(det_bboxes[i], det_labels[i], num_classes)
             for i in range(num_imgs)
         ]
+
         return bbox_results
 
     def aug_test(self, features, proposal_list, img_metas, rescale=False):

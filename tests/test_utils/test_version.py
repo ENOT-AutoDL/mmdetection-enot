@@ -1,4 +1,3 @@
-# Copyright (c) OpenMMLab. All rights reserved.
 from mmdet import digit_version
 
 

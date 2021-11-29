@@ -1,4 +1,3 @@
-# Copyright (c) OpenMMLab. All rights reserved.
 from __future__ import division
 import copy
 import warnings
@@ -632,11 +631,14 @@ class StageCascadeRPNHead(RPNHead):
         if cfg.min_bbox_size >= 0 and (not torch.onnx.is_in_onnx_export()):
             w = proposals[:, 2] - proposals[:, 0]
             h = proposals[:, 3] - proposals[:, 1]
-            valid_mask = (w > cfg.min_bbox_size) & (h > cfg.min_bbox_size)
-            if not valid_mask.all():
-                proposals = proposals[valid_mask]
-                scores = scores[valid_mask]
-                ids = ids[valid_mask]
+            valid_inds = torch.nonzero(
+                (w > cfg.min_bbox_size)
+                & (h > cfg.min_bbox_size),
+                as_tuple=False).squeeze()
+            if valid_inds.sum().item() != len(proposals):
+                proposals = proposals[valid_inds, :]
+                scores = scores[valid_inds]
+                ids = ids[valid_inds]
 
         # deprecate arguments warning
         if 'nms' not in cfg or 'max_num' in cfg or 'nms_thr' in cfg:

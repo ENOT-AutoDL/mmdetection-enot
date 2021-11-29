@@ -1,4 +1,3 @@
-# Copyright (c) OpenMMLab. All rights reserved.
 import torch
 from mmcv.ops.nms import batched_nms
 
@@ -42,7 +41,7 @@ def multiclass_nms(multi_bboxes,
 
     scores = multi_scores[:, :-1]
 
-    labels = torch.arange(num_classes, dtype=torch.long, device=scores.device)
+    labels = torch.arange(num_classes, dtype=torch.long)
     labels = labels.view(1, -1).expand_as(scores)
 
     bboxes = bboxes.reshape(-1, 4)
@@ -90,7 +89,7 @@ def multiclass_nms(multi_bboxes,
         keep = keep[:max_num]
 
     if return_inds:
-        return dets, labels[keep], inds[keep]
+        return dets, labels[keep], keep
     else:
         return dets, labels[keep]
 

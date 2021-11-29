@@ -1,4 +1,3 @@
-# Copyright (c) OpenMMLab. All rights reserved.
 import copy
 import warnings
 
@@ -117,7 +116,7 @@ class NumClassCheckHook(Hook):
 
     def _check_head(self, runner):
         """Check whether the `num_classes` in head matches the length of
-        `CLASSES` in `dataset`.
+        `CLASSSES` in `dataset`.
 
         Args:
             runner (obj:`EpochBasedRunner`): Epoch based Runner.

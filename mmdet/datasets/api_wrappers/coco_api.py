@@ -1,4 +1,3 @@
-# Copyright (c) OpenMMLab. All rights reserved.
 # This file add snake case alias for coco api
 
 import warnings

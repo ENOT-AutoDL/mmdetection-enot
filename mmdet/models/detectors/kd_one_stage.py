@@ -1,4 +1,3 @@
-# Copyright (c) OpenMMLab. All rights reserved.
 import mmcv
 import torch
 from mmcv.runner import load_checkpoint

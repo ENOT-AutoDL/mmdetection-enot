@@ -1,4 +1,3 @@
-# Copyright (c) OpenMMLab. All rights reserved.
 from mmcv.cnn.bricks import build_plugin_layer
 from mmcv.runner import force_fp32
 

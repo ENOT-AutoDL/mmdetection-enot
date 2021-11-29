@@ -2,7 +2,7 @@
 
 ## Mirror sites
 
-We only use aliyun to maintain the model zoo since MMDetection V2.0. The model zoo of V1.x has been deprecated.
+We only use aliyun to maintain the model zoo since MMDetection V2.0. The model zoo of V1.x remains in AWS and will be deprecated in the future.
 
 ## Common settings
 
@@ -225,10 +225,6 @@ Please refer to [Seesaw Loss](https://github.com/open-mmlab/mmdetection/blob/mas
 ### CenterNet
 
 Please refer to [CenterNet](https://github.com/open-mmlab/mmdetection/blob/master/configs/centernet) for details.
-
-### YOLOX
-
-Please refer to [YOLOX](https://github.com/open-mmlab/mmdetection/blob/master/configs/yolox) for details.
 
 ### Other datasets
 

@@ -1,4 +1,4 @@
-# Copyright (c) OpenMMLab. All rights reserved.
+from __future__ import division
 import math
 
 import numpy as np

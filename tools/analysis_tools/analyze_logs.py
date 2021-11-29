@@ -1,4 +1,3 @@
-# Copyright (c) OpenMMLab. All rights reserved.
 import argparse
 import json
 from collections import defaultdict
