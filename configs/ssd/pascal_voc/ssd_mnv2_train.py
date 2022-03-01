@@ -1,5 +1,5 @@
 _base_ = [
-    'ssd_mnv2_mmdet.py',
+    'ssd_mnv2.py',
     '../../_base_/datasets/voc0712.py',
     '../../_base_/schedules/schedule_2x.py',
     '../../_base_/default_runtime.py',
