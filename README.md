@@ -86,10 +86,10 @@ This section describes how you can run neural architecture search with ENOT for 
    * Launch `search_with_resolution.sh` to search an optimal architecture for your task 
      (you should specify `target_latency` in `configs/ssd/pascal_voc/ssd_mnv2_search_with_resolution.py` needed
      for your project).
-   * Other important parameters for `search with resolution` are: `resolution_tolerance`, `baseline_ckpt`, `work_dir`.
+   * Other important parameters for `search with resolution` are: `resolution_tolerance`, `ss_checkpoint`, `work_dir`.
 6. Search architecture on fixed resolution
    * If you want to search optimal architecture faster and don't want to change input image resolution you can use `search.sh`
-   * Before run the script you should set `target_latency`, `baseline_ckpt`, `work_dir`, variables in `configs/ssd/pascal_voc/ssd_mnv2_search.py`
+   * Before run the script you should set `target_latency`, `ss_checkpoint`, `work_dir`, variables in `configs/ssd/pascal_voc/ssd_mnv2_search.py`
 7. Training the model found with ENOT
    * Get the last reported architecture from the search run (which is stored in list with integers),
      copy it and paste to variable `searched_arch` in `configs/ssd/pascal_voc/ssd_mnv2_tune.py` 
