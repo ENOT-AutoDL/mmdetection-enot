@@ -96,13 +96,13 @@ class YOLOV3Neck(BaseModule):
                  conv_cfg=None,
                  norm_cfg=dict(type='BN', requires_grad=True),
                  act_cfg=dict(type='LeakyReLU', negative_slope=0.1),
-                 init_cfg=None):
+                 init_cfg=None,
+                 ):
         super(YOLOV3Neck, self).__init__(init_cfg)
         assert (num_scales == len(in_channels) == len(out_channels))
         self.num_scales = num_scales
         self.in_channels = in_channels
         self.out_channels = out_channels
-
         # shortcut
         cfg = dict(conv_cfg=conv_cfg, norm_cfg=norm_cfg, act_cfg=act_cfg)
 
@@ -130,7 +130,8 @@ class YOLOV3Neck(BaseModule):
             tmp = conv(out)
 
             # Cat with low-lvl feats
-            tmp = F.interpolate(tmp, scale_factor=2)
+            tmp = F.interpolate(tmp, size=(x.shape[2], x.shape[3]))
+
             tmp = torch.cat((tmp, x), 1)
 
             detect = getattr(self, f'detect{i+2}')

@@ -217,10 +217,15 @@ class YOLOV3Head(BaseDenseHead, BBoxTestMixin):
         """
         num_levels = len(pred_maps)
         pred_maps_list = [pred_maps[i].detach() for i in range(num_levels)]
-        scale_factors = [
-            img_metas[i]['scale_factor']
-            for i in range(pred_maps_list[0].shape[0])
-        ]
+        
+        if rescale:
+            scale_factors = [
+                img_metas[i]['scale_factor']
+                for i in range(pred_maps_list[0].shape[0])
+            ]
+        else:
+            scale_factors = None
+
         result_list = self._get_bboxes(pred_maps_list, scale_factors, cfg,
                                        rescale, with_nms)
         return result_list

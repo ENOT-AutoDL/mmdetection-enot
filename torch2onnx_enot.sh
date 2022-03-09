@@ -1,6 +1,10 @@
-CUDA_VISIBLE_DEVICES=2 python mmdet/enot_tools/pytorch2onnx_enot.py \
-    configs/ssd/pascal_voc/ssd300_tune_on_resolution.py \
-    /2tb/prikhodko/projects/enot/mmdet/logs/check/tune_on_resolution/epoch_0.pth \
-    --output-file /2tb/prikhodko/projects/enot/mmdet/logs/check/onnx/ssd_mnv2_tuned.onnx \
-    --input-img /home/prikhodko/projects/enot/mmdetection-enot/data/VOCdevkit/VOC2007/JPEGImages/000001.jpg\
-    --shape 247 \
+config_path=configs/ssd/pascal_voc/ssd_mnv2_tune_on_resolution.py
+chkpt_path=./workdir/tune_searched_model/epoch_39.pth
+out_path=searched_mnv2_ssd.onnx
+
+CUDA_VISIBLE_DEVICES=0 python mmdet/enot_tools/pytorch2onnx_enot.py \
+    $config_path \
+    $chkpt_path \
+    --output-file $out_path\
+    --input-img demo/demo.jpg\
+    --shape 224\

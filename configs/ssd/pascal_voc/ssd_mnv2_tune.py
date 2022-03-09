@@ -22,9 +22,9 @@ checkpoint_config = dict(interval=1)
 # runtime settings
 runner = dict(type='EpochBasedRunner', max_epochs=total_epochs)
 
-ss_checkpoint = './workdir/multires_pretrain_our_2/epoch_59.pth'
+ss_checkpoint = 'workdir/pretrain_mnv2_ssd/epoch_99.pth'
 searched_arch = [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
-work_dir = 'workdir/tune_baseline_480_from_pretrain_2_59'
+work_dir = 'workdir/tune_searched_mnv2_ssd'
 random_seed = 0
 
 scheduler = dict(type='CosineAnnealingLR')

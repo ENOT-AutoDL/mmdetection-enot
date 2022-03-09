@@ -5,7 +5,7 @@ _base_ = [
 total_epochs = 40
 batch_size = 32
 
-resolution = 398
+resolution = 332
 img_scale = (resolution, resolution)
 
 img_norm_cfg = dict(mean=[123.675, 116.28, 103.53], std=[1, 1, 1], to_rgb=True)
@@ -71,10 +71,10 @@ checkpoint_config = dict(interval=1)
 # runtime settings
 runner = dict(type='EpochBasedRunner', max_epochs=total_epochs)
 
+ss_checkpoint = 'workdir/multires_pretrain_mnv2_ssd/epoch_59.pth'
 searched_arch = [0, 0, 0, 0, 1, 0, 1, 0, 0, 0, 0, 0, 0, 0, 2, 0, 0]
 # if choose architecture, it is necessary to define search_space checkpoint
-resume_from = './workdir/tune_found_550/epoch_39.pth'
-work_dir = './workdir/tune_found_550_2'
+work_dir = './workdir/tune_on_res_searched_mnv2_ssd'
 random_seed = 0
 
 scheduler = dict(type='CosineAnnealingLR')

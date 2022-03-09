@@ -9,8 +9,8 @@ use_batchnorm_tuning = True
 data = dict(samples_per_gpu=batch_size)
 
 # optimizer
-optimizer = dict(type='SGD', lr=1., momentum=0.9, weight_decay=0)
-optimizer_params = dict(lr=1., momentum=0.9, weight_decay=0)
+optimizer = dict(type='SGD', lr=1., momentum=0.0, weight_decay=0)
+optimizer_params = dict(lr=1., momentum=0.0, weight_decay=0)
 optimizer_config = dict()
 # learning policy
 lr_config = dict(
@@ -23,9 +23,8 @@ checkpoint_config = dict(interval=1)
 # runtime settings
 runner = dict(type='EpochBasedRunner', max_epochs=total_epochs)
 
-baseline_ckpt = None
-resume_from = './workdir/multires_pretrain_our_2/epoch_59.pth'
-work_dir = 'workdir/search_test'
+ss_checkpoint = 'workdir/pretrain_mnv2_ssd/epoch_99.pth'
+work_dir = 'workdir/search_mnv2_ssd'
 
 random_seed = 0
 

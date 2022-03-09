@@ -5,7 +5,6 @@ import warnings
 from functools import partial
 
 import numpy as np
-import onnx
 import torch
 from mmcv import Config, DictAction
 
@@ -71,16 +70,16 @@ def pytorch2onnx(model,
         dynamic_axes = {
             input_name: {
                 0: 'batch',
-                2: 'width',
-                3: 'height'
+                # 2: 'width',
+                # 3: 'height'
             },
             'dets': {
                 0: 'batch',
-                1: 'num_dets',
+                # 1: 'num_dets',
             },
             'labels': {
                 0: 'batch',
-                1: 'num_dets',
+                # 1: 'num_dets',
             },
         }
         if model.with_mask:
@@ -92,10 +91,10 @@ def pytorch2onnx(model,
         output_file,
         input_names=[input_name],
         output_names=output_names,
-        export_params=True,
-        keep_initializers_as_inputs=True,
-        do_constant_folding=True,
-        verbose=show,
+        # export_params=True,
+        # keep_initializers_as_inputs=True,
+        # do_constant_folding=True,
+        # verbose=show,
         opset_version=opset_version,
         dynamic_axes=dynamic_axes)
 

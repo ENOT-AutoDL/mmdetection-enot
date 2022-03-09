@@ -76,7 +76,7 @@ checkpoint_config = dict(interval=1)
 # runtime settings
 runner = dict(type='EpochBasedRunner', max_epochs=total_epochs)
 
-work_dir = 'workdir/train_our/'
+work_dir = 'workdir/train_mnv2_ssd/' # path to save checkpoints during training
 random_seed = 0
 
 scheduler = dict(type='CosineAnnealingLR')

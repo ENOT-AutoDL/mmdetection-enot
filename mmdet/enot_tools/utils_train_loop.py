@@ -60,10 +60,15 @@ def evaluate(
             test_model.eval()
 
     if getattr(cfg, 'use_batchnorm_tuning', None):
+        model.cpu()
+        torch.cuda.empty_cache()
         state = copy.deepcopy(model.state_dict())
+        model.cuda()
         logger.info(f'BatchNorm tuning')
         test_model.train() if use_test_model else model.train()
-        for data in tqdm(bn_tune_loader):
+        for iter_num, data in tqdm(enumerate(bn_tune_loader)):
+            if hasattr(cfg, 'batchnorm_tuning_iter_num') and iter_num == cfg.batchnorm_tuning_iter_num:
+                break
             with torch.no_grad():
                 _ = custom_train_forward_logic(test_model if use_test_model else model, data)
         test_model.eval() if use_test_model else model.eval()
@@ -95,7 +100,8 @@ def evaluate(
             logger.info(f'arch_probs: {model.architecture_probabilities}')
 
         for metric_name, metric_value in current_metrics.items():
-            writer.add_scalar(f'val/{metric_name}', metric_value, epoch)
+            if isinstance(metric_value, float):
+                writer.add_scalar(f'val/{metric_name}', metric_value, epoch)
         writer.flush()
     if getattr(cfg, 'use_batchnorm_tuning', None):
         model.load_state_dict(state_dict=state)
@@ -138,10 +144,13 @@ def train_epoch(
     for idx, data in enumerate(tqdm(train_loader_rs)):
         model.train()
         if isinstance(model, SearchSpaceModel) and not model.output_distribution_optimization_enabled:
+            data['gt_bboxes'] = [bb.cuda() for bb in data['gt_bboxes']]
+            data['gt_labels'] = [lbl.cuda() for lbl in data['gt_labels']]
             # Otherwise, an "unexpected argument" error occurs.
             if 'gt_masks' in data:
+                data['gt_masks'] = [mask.cuda() for mask in data['gt_masks']]
                 model.initialize_output_distribution_optimization(
-                    data['img'],
+                    data['img'].cuda(),
                     data['img_metas'],
                     gt_bboxes=data['gt_bboxes'],
                     gt_labels=data['gt_labels'],
@@ -149,7 +158,7 @@ def train_epoch(
                 )
             else:
                 model.initialize_output_distribution_optimization(
-                    data['img'],
+                    data['img'].cuda(),
                     data['img_metas'],
                     gt_bboxes=data['gt_bboxes'],
                     gt_labels=data['gt_labels'],

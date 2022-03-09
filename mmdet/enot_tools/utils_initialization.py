@@ -56,8 +56,8 @@ PHASE_NAMES = (
 
 Scheduler = torch.optim.lr_scheduler._LRScheduler
 
+# DEFAULT_DESCRIPTORS = tuple(TransformationParameters(width_mult=mult) for mult in (1.0, 0.9, 0.75, 0.5, 0.25, 0.1, 0.0))
 DEFAULT_DESCRIPTORS = tuple(TransformationParameters(width_mult=mult) for mult in (1.0, 0.5, 0.33, 0.17, 0.08, 0.0))
-
 
 def init_dataloaders(
         cfg: Config,
@@ -94,7 +94,7 @@ def init_and_log_latency(
 
     search_space.original_model.real_forward = search_space.original_model.forward
     search_space.original_model.forward = search_space.original_model.forward_dummy
-    latency_container = initialize_latency('mmac.thop', search_space, (sample_batch['img'],))
+    latency_container = initialize_latency('mmac.thop', search_space, (sample_batch['img'].cuda(),))
     logger.info(f'operations_latencies: {latency_container._operations_latencies}')
     logger.info(f'Constant latency = {latency_container.constant_latency}\n'
                 f'Min latency: {min_latency(latency_container)}\n'
@@ -177,7 +177,7 @@ def init_model(
     """
     model = build_detector(cfg.model)
 
-    if 'pretrain' in cfg.phase_name and cfg.baseline_ckpt:
+    if 'pretrain' in cfg.phase_name and hasattr(cfg, 'baseline_ckpt') and cfg.baseline_ckpt:
         logger.info(f'Use{cfg.baseline_ckpt} as baseline checkpoint')
         logger.info(
             model.load_state_dict(
@@ -190,8 +190,9 @@ def init_model(
                           'tune', 'tune_on_resolution'):
         model = build_search_space_from_model(model)
 
-        if 'tune' in cfg.phase_name:
-            if hasattr(cfg,  'ss_checkpoint'):
+        if 'tune' in cfg.phase_name or 'search' in cfg.phase_name:
+            logger.info(f"Start from SearchSpace checkpoint: {cfg.ss_checkpoint}")
+            if hasattr(cfg, 'ss_checkpoint'):
                 model.load_state_dict(
                     torch.load(
                         cfg.ss_checkpoint,
@@ -199,9 +200,10 @@ def init_model(
                     )['model'],
                     strict=False,
                 )
+        if 'tune' in cfg.phase_name:
             if hasattr(cfg, 'searched_arch') and cfg.searched_arch:
-                logger.error(f"Number of operations in cfg.searched_arch: {len(cfg.searched_arch)}")
-                logger.error(f"Number of operations in model.search_blocks: {len(model.search_blocks)}")
+                logger.info(f"Number of operations in cfg.searched_arch: {len(cfg.searched_arch)}")
+                logger.info(f"Number of operations in model.search_blocks: {len(model.search_blocks)}")
                 model = model.get_network_by_indexes(cfg.searched_arch)
             else:
                 model = model.get_network_with_best_arch()

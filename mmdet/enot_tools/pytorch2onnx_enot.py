@@ -1,11 +1,14 @@
+import os
 import os.path as osp
 import warnings
 
 import torch.onnx
 from mmcv import Config
 
-from mmdet.enot_tools.train_loop import build_search_space_from_model
+from mmdet.enot_tools.utils_initialization import build_search_space_from_model
 from mmdet.models import build_detector
+import sys
+sys.path = ['/home/scherbin/jupyter_home/ENOT/mmdetection-enot/'] + sys.path
 from tools.deployment.pytorch2onnx import parse_args
 from tools.deployment.pytorch2onnx import parse_normalize_cfg
 from tools.deployment.pytorch2onnx import pytorch2onnx
@@ -47,15 +50,21 @@ if __name__ == '__main__':
 
     model = build_detector(cfg.model)
     search_space = build_search_space_from_model(model)
+    print(len(search_space.search_blocks))
+    print(len(cfg.searched_arch))
     searched_model = search_space.get_network_by_indexes(cfg.searched_arch)
 
-    searched_model.load_state_dict(
-        torch.load(
-            args.checkpoint,
-            map_location='cpu',
-        )['model'],
-        strict=False,
-    )
+    if os.path.exists(args.checkpoint):
+        searched_model.load_state_dict(
+            torch.load(
+                args.checkpoint,
+                map_location='cpu',
+            ),
+            strict=False,
+        )
+    else:
+        warnings.warn("Checkpoint not loaded, export ONNX with random weights!")
+
     searched_model.cpu()
     if not args.input_img:
         args.input_img = osp.join(osp.dirname(__file__), '../../demo/demo.jpg')

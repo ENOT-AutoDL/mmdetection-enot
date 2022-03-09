@@ -128,8 +128,7 @@ checkpoint_config = dict(interval=1)
 # runtime settings
 runner = dict(type='EpochBasedRunner', max_epochs=total_epochs)
 
-work_dir = '/2tb/prikhodko/projects/enot/mmdet/logs/ssd300_mnv2/retina_mnv2_4conv'
-# work_dir = '/srv/scherbin/mmdet/detection_demo/test_detection_demo/'
+work_dir = 'workdir/train_retina_mnv2/'
 random_seed = 0
 
 scheduler = dict(type='CosineAnnealingLR')

@@ -42,7 +42,7 @@ class VOCResizeStrategy:
         w_scale = size / images_tensor.shape[-1]
         h_scale = size / images_tensor.shape[-2]
         scale_factors = torch.tensor([[w_scale, h_scale, w_scale, h_scale]],
-                                     dtype=torch.float32).cuda()
+                                     dtype=torch.float32)
 
         scaled_bboxes = []
         for bbox in data['gt_bboxes']:

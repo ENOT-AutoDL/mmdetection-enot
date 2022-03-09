@@ -9,9 +9,8 @@ use_batchnorm_tuning = True
 phase_name = 'multiresolution_pretrain'
 resolution_range = (320, 640)
 
-baseline_ckpt = './workdir/train_our/epoch_99.pth'
-resume_from = './workdir/multires_pretrain_our_test/epoch_59.pth'
-work_dir = './workdir/multires_pretrain_our_2'
+baseline_ckpt = 'workdir/train_mnv2_ssd/epoch_99.pth'
+work_dir = 'workdir/multires_pretrain_mnv2_ssd/'
 random_seed = 0
 
 # optimizer

@@ -1,4 +1,4 @@
--r requirements/build.txt
--r requirements/optional.txt
--r requirements/runtime.txt
--r requirements/tests.txt
+torch==1.8.0
+torchvision==0.9.0
+enot-autodl==2.7.0
+mmcv-full==1.4.0

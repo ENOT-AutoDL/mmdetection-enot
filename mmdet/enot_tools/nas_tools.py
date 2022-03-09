@@ -4,6 +4,7 @@ from typing import List
 from typing import Optional
 from typing import Tuple
 from typing import Union
+from mmdet.datasets.coco import CocoDataset
 
 import numpy as np
 import torch
@@ -18,7 +19,6 @@ __all__ = ['train_collate_function', 'valid_collate_function',
 
 def train_collate_function(
         batch: List[dict],
-        device: str = 'cuda',
 ) -> Dict[str, Any]:
     """Collate function for train dataset.
 
@@ -26,8 +26,6 @@ def train_collate_function(
     ----------
     batch:
         List of sample from TRAIN dataset object.
-    device:
-        Device for collected batch.
 
     Returns
     -------
@@ -39,17 +37,16 @@ def train_collate_function(
     images = []
     gt_masks = []
 
-    device = torch.device(device)
     for sample in batch:
         image_metas.append(sample['img_metas'].data)
-        gt_bboxes.append(sample['gt_bboxes'].data.to(device))
-        gt_labels.append(sample['gt_labels'].data.to(device))
+        gt_bboxes.append(sample['gt_bboxes'].data)
+        gt_labels.append(sample['gt_labels'].data)
         if 'gt_masks' in sample:
-            gt_masks.append(sample['gt_masks'].data.to(device))
-        images.append(sample['img'].data.to(device))
+            gt_masks.append(sample['gt_masks'].data)
+        images.append(sample['img'].data)
 
     images_tensor = torch.zeros((len(batch), *images[0].shape), dtype=torch.float)
-    images_tensor = images_tensor.to(device)
+    images_tensor = images_tensor
 
     for i, img in enumerate(images):
         images_tensor[i] = img
@@ -65,8 +62,7 @@ def train_collate_function(
 
 
 def valid_collate_function(
-        batch: List[Tuple[dict, int]],
-        device: Optional[str] = 'cuda',
+        batch: List[Tuple[dict, int]]
 ) -> Tuple[Dict[str, Any], List[int]]:
     """Collate function for validation dataset
 
@@ -74,8 +70,6 @@ def valid_collate_function(
     ----------
     batch:
         List of sample from VALIDATION dataset object.
-    device:
-        Device for collected batch.
 
     Returns
     -------
@@ -86,14 +80,13 @@ def valid_collate_function(
     images = []
     indices = []
 
-    device = torch.device(device)
     for sample, index in batch:
         image_metas.append(sample['img_metas'][0].data)
-        images.append(sample['img'][0].data.to(device))
+        images.append(sample['img'][0].data)
         indices.append(index)
 
     images_tensor = torch.zeros((len(batch), *images[0].shape), dtype=torch.float)
-    images_tensor = images_tensor.to(device)
+    images_tensor = images_tensor
 
     for i, img in enumerate(images):
         images_tensor[i] = img
@@ -105,6 +98,8 @@ def custom_valid_forward_logic(
         data: Dict[str, Any],
 ) -> Any:
     """Custom forward logic for validation"""
+    data['img'] = [img.cuda() for img in data['img']]
+
     return model(return_loss=False, rescale=True, img=data['img'], img_metas=data['img_metas'])
 
 
@@ -113,9 +108,13 @@ def custom_train_forward_logic(
         data: Dict[str, Any],
 ) -> Any:
     """Custom forward logic for training"""
+    data['gt_bboxes'] = [bb.cuda() for bb in data['gt_bboxes']]
+    data['gt_labels'] = [lbl.cuda() for lbl in data['gt_labels']]
+
     if 'gt_masks' in data:
+        data['gt_masks'] = [mask.cuda() for mask in data['gt_masks']]
         return model(
-            data['img'],
+            data['img'].cuda(),
             data['img_metas'],
             gt_bboxes=data['gt_bboxes'],
             gt_labels=data['gt_labels'],
@@ -123,7 +122,7 @@ def custom_train_forward_logic(
         )
     else:
         return model(
-            data['img'],
+            data['img'].cuda(),
             data['img_metas'],
             gt_bboxes=data['gt_bboxes'],
             gt_labels=data['gt_labels'],
@@ -181,8 +180,11 @@ def custom_coco_evaluation(
         Average COCO metrics for sample architectures.
     """
     results = sort_and_normalize_results(results)
-
-    arch_metrics = dataset.evaluate(results, metric=metric, iou_thr=iou_thr)
+    
+    if type(dataset) is CocoDataset:
+        arch_metrics = dataset.evaluate(results, metric=metric, iou_thrs=iou_thr)
+    else:
+        arch_metrics = dataset.evaluate(results, metric=metric, iou_thr=iou_thr)        
 
     return arch_metrics
 

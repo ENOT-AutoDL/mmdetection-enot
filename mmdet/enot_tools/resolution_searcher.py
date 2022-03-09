@@ -20,6 +20,13 @@ class ResolutionSearcher(ResolutionSearcherWithFixedLatencyIterator):
         dataloader = resolution_strategy(self._dataloader)
         test_inputs = next(dataloader)
 
+        test_inputs['img'] = test_inputs['img'].cuda()
+        test_inputs['gt_bboxes'] = [bb.cuda() for bb in test_inputs['gt_bboxes']]
+        test_inputs['gt_labels'] = [lbl.cuda() for lbl in test_inputs['gt_labels']]
+
+        if 'gt_masks' in test_inputs:
+            test_inputs['gt_masks'] = [mask.cuda() for mask in test_inputs['gt_masks']]
+
         model_args, model_kwargs = self._sample_to_model_inputs(test_inputs)
 
         # Latency calculators need the forward inputs  be torch.Tensors,

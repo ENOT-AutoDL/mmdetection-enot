@@ -22,8 +22,8 @@ checkpoint_config = dict(interval=1)
 # runtime settings
 runner = dict(type='EpochBasedRunner', max_epochs=total_epochs)
 
-baseline_ckpt = None
-work_dir = 'work_dir/pretrain/'
+baseline_ckpt = 'workdir/train_mnv2_ssd/epoch_1.pth'
+work_dir = 'workdir/pretrain_mnv2_ssd/'
 
 random_seed = 0
 

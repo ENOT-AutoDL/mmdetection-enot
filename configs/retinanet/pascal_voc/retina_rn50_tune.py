@@ -22,9 +22,9 @@ checkpoint_config = dict(interval=1)
 # runtime settings
 runner = dict(type='EpochBasedRunner', max_epochs=total_epochs)
 
-ss_checkpoint = '/srv/scherbin/mmdet/detection_demo/res_112_300_pretrain_retina_enot25/epoch_99.pth'
-searched_arch = [3, 2, 3, 2, 3, 4, 3, 4, 4, 3, 3, 4, 3, 4, 3, 3, 0, 0]
-work_dir = f'/srv/scherbin/mmdet/detection_demo/tune_300_with_bn_train'
+ss_checkpoint = 'workdir/pretrain_retina_rn50/epoch_100.pth'
+searched_arch = [0] * 16
+work_dir = 'workdir/tune_retina_rn50'
 random_seed = 0
 
 scheduler = dict(type='CosineAnnealingLR')

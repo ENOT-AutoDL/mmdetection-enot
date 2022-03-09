@@ -1,0 +1,29 @@
+baseline metrics:
+"bbox_mAP_copypaste": "0.337 0.566 0.353 0.194 0.368 0.443"
+our baseline_metrics:
+'bbox_mAP_copypaste', '0.337 0.566 0.353 0.194 0.368 0.443'
+
+search space (0 epoch chkpt):
+Constant latency = 24882.815587
+Min latency: 28411.713326999998
+Mean latency: 42217.60695966662
+Max latency: 70593.24784300002
+Median latency: 42408.5838415
+
+arch = [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
+
+channels:
+
+yolo_neck
+# print('TMP SHAPE: \n', tmp.shape)
+# print('X SHAPE: \n', x.shape)
+
+# if self.onnx_export:
+#     if self.is_first:
+#         tmp = F.interpolate(tmp, size=(38, 38))
+#         self.is_first = False
+#     else:
+#         tmp = F.interpolate(tmp, size=(76, 76))
+#         self.is_first = True
+# else:
+

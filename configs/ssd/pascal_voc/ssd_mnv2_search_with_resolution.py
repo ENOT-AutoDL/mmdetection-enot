@@ -9,15 +9,14 @@ phase_name = 'search_with_resolution'
 target_latency = 832
 resolution_tolerance = 8
 
-baseline_ckpt = None
-resume_from = './workdir/multires_pretrain_our_2/epoch_59.pth'
-work_dir = './workdir/search_with_resolution_test'
+ss_checkpoint = 'workdir/multires_pretrain_mnv2_ssd/epoch_59.pth'
+work_dir = 'workdir/search_with_resolution_mnv2_ssd'
 
 
 data = dict(samples_per_gpu=batch_size,)
 # optimizer
-optimizer = dict(type='SGD', lr=1e-3, momentum=0.9, weight_decay=0)
-optimizer_params = dict(lr=1e-3, momentum=0.9, weight_decay=0)
+optimizer = dict(type='SGD', lr=1e-3, momentum=0.0, weight_decay=0)
+optimizer_params = dict(lr=1e-3, momentum=0.0, weight_decay=0)
 optimizer_config = dict()
 # learning policy
 lr_config = dict(

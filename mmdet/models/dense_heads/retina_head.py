@@ -82,7 +82,6 @@ class RetinaHead(AnchorHead):
                     padding=1,
                     conv_cfg=self.conv_cfg,
                     norm_cfg=self.norm_cfg))
-
         self.cls_convs = nn.Sequential(*self.cls_convs)
         self.reg_convs = nn.Sequential(*self.reg_convs)
         self.retina_cls = nn.Conv2d(

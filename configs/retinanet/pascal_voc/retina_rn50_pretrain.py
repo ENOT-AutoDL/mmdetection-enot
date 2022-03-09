@@ -22,11 +22,9 @@ checkpoint_config = dict(interval=1)
 # runtime settings
 runner = dict(type='EpochBasedRunner', max_epochs=total_epochs)
 
-baseline_ckpt = None  #'/4TB_second/prikhodko/ssd/projects/enot/mmdet/detection_demo/baseline/epoch_24.pth'
-work_dir = '/4TB_second/prikhodko/ssd/projects/enot/mmdet/detection_demo/res_112_300_pretrain_retina_enot25/'
+baseline_ckpt = 'workdir/train_retina_rn50/epoch_29.pth'
+work_dir = 'workdir/pretrain_retina_rn50'
 
-# baseline_ckpt = '/srv/scherbin/mmdet/detection_demo/baseline/epoch_24.pth'
-# work_dir = '/srv/scherbin/mmdet/detection_demo/res_112_300_pretrain_retina_enot25/'
 random_seed = 0
 
 scheduler = dict(type='CosineAnnealingLR')

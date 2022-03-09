@@ -8,8 +8,8 @@ batch_size = 42
 data = dict(samples_per_gpu=batch_size)
 
 # optimizer
-optimizer = dict(type='SGD', lr=1e-3, momentum=0.9, weight_decay=5e-4)
-optimizer_params = dict(lr=1e-3, momentum=0.9, weight_decay=5e-4)
+optimizer = dict(type='SGD', lr=1e-3, momentum=0.0, weight_decay=5e-4)
+optimizer_params = dict(lr=1e-3, momentum=0.0, weight_decay=5e-4)
 optimizer_config = dict()
 # learning policy
 lr_config = dict(
@@ -22,11 +22,9 @@ checkpoint_config = dict(interval=1)
 # runtime settings
 runner = dict(type='EpochBasedRunner', max_epochs=total_epochs)
 
-baseline_ckpt = None  #'/4TB_second/prikhodko/ssd/projects/enot/mmdet/detection_demo/baseline/epoch_24.pth'
-work_dir = '/4TB_second/prikhodko/ssd/projects/enot/mmdet/detection_demo/test_detection_demo/'
+ss_checkpoint = 'workdir/pretrain_retina_rn50/epoch_100.pth'
+work_dir = 'workdir/search_retina_rn50'
 
-# resume_from = '/srv/scherbin/mmdet/detection_demo/res_112_300_pretrain_retina_enot25/epoch_99.pth'
-# work_dir = '/srv/scherbin/mmdet/detection_demo/test_detection_demo/'
 random_seed = 0
 
 scheduler = dict(type='CosineAnnealingLR')
